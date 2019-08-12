@@ -1,0 +1,7 @@
+# Guia de Yii2
+https://www.yiiframework.com/doc/guide/2.0/es/start-installation
+
+# Ejecutar servidor
+php yii serve --port=8888
+
+# Kartik
