@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\components\helpers\DateHelper;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Book;
@@ -51,12 +52,19 @@ class BookSearch extends Book
             'query' => $query,
         ]);
 
-        $dataProvider->sort->attributes['author'] = [
+        $dataProvider->sort->attributes['authorName'] = [
             'asc' => ['authors.name' => SORT_ASC],
             'desc' => ['authors.name' => SORT_DESC]
         ];
 
         $this->load($params);
+
+        if($this->created_at){
+            list($startDate, $endDate) = explode(' - ', $this->created_at);
+
+            $query->andFilterWhere(['>=', self::tableName() . '.created_at', DateHelper::getDateFromUserToSql($startDate)]);
+            $query->andFilterWhere(['<=', self::tableName() . '.created_at', DateHelper::getDateFromUserToSql($endDate)]);
+        }
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
@@ -72,9 +80,6 @@ class BookSearch extends Book
             'quantity' => $this->quantity,
             'price' => $this->price,
             'active' => $this->active,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'deleted_at' => $this->deleted_at,
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])

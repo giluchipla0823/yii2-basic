@@ -28,6 +28,8 @@ class Book extends \yii\db\ActiveRecord
 {
     public $authorName;
 
+    public $customField;
+
     /**
      * {@inheritdoc}
      */

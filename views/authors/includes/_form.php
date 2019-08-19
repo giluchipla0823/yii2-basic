@@ -1,6 +1,6 @@
 <?php
 use yii\helpers\Html;
-use app\libraries\DetailView;
+use app\components\libraries\DetailView;
 ?>
 <div class="authors-view">
     <?=

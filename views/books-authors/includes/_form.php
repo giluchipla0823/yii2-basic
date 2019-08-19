@@ -2,9 +2,13 @@
 use yii\helpers\Html;
 use app\components\libraries\DetailView;
 use kartik\widgets\Select2;
-use app\models\Author;
 use app\models\Publisher;
 use yii\helpers\ArrayHelper;
+
+/* @var $model app\models\Book */
+/* @var $author app\models\Author */
+/* @var $mode string */
+/* @var $title string */
 ?>
 
 <div class="books-form">
@@ -38,18 +42,12 @@ use yii\helpers\ArrayHelper;
                 'columns' => [
                     [
                         'label' => 'Autor',
-                        'attribute' => 'author_id',
-                        'value' => $model->author ? $model->author->name : NULL,
-                        'type' => DetailView::INPUT_SELECT2,
-                        'widgetOptions' => [
-                            'data' => ArrayHelper::map(Author::find()->asArray()->all(), 'id', 'name'),
-                            'theme' => Select2::THEME_BOOTSTRAP,
-                            'pluginOptions' => [
-                                'allow-clear' => TRUE,
-                                'placeholder' => 'Seleccionar'
-                            ]
-                        ],
-                        'valueColOptions' => ['style' => 'width:30%']
+                        'attribute' => 'customField',
+                        'value' => isset($author->name) ? $author->name : NULL,
+                        'valueColOptions' => ['style' => 'width:30%'],
+                        'updateMarkup' => function($form) use($author){
+                            return $form->field($author, 'name');
+                        }
                     ],
                     [
                         'label' => 'Publicador',

@@ -1,6 +1,6 @@
 <?php
 
-namespace app\libraries;
+namespace app\components\libraries;
 
 use \kartik\grid\GridView as KartikGridView;
 use \nterms\pagesize\PageSize;

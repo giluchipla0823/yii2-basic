@@ -1,8 +1,8 @@
 <?php
 
-namespace app\libraries;
+namespace app\components\libraries;
 
-use \kartik\detail\DetailView as KartikDetailView;
+use kartik\detail\DetailView as KartikDetailView;
 use yii\helpers\Html;
 
 class DetailView extends KartikDetailView

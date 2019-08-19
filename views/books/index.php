@@ -3,9 +3,10 @@
 use yii\helpers\Html;
 use yii\widgets\Pjax;
 use app\models\Publisher;
-use app\libraries\GridView;
+use app\components\libraries\GridView;
 use yii\helpers\ArrayHelper;
-use \kartik\grid\ActionColumn;
+use kartik\grid\ActionColumn;
+use kartik\select2\Select2;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\BookSearch */
@@ -19,7 +20,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?php Pjax::begin(['id' => 'grid-books', 'timeout' => false, 'enablePushState' => false]) ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'id' => 'grid-books',
@@ -45,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'Título',
                 'attribute' => 'title',
                 'headerOptions' => ['class' => 'kartik-sheet-style text-center'],
-                'vAlign' => 'middle'
+                'vAlign' => 'middle',
             ],
             [
                 'label' => 'Descripción',
@@ -76,6 +76,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter' => ArrayHelper::map(Publisher::find()->asArray()->all(), 'id', 'name'),
                 'filterType' => GridView::FILTER_SELECT2,
                 'filterWidgetOptions' => [
+                    'theme' => Select2::THEME_BOOTSTRAP,
                     'pluginOptions' => [
                         'allowClear' => true,
                         'width' => '100%',
@@ -101,6 +102,25 @@ $this->params['breadcrumbs'][] = $this->title;
                     return Html::tag('span', 'Deshabilitado', ['class' => 'label label-danger']);
                 },
                 'format' => 'raw',
+            ],
+            [
+                'label' => 'Fecha creación',
+                'attribute' => 'created_at',
+                'filterType' => GridView::FILTER_DATE_RANGE,
+                'value' => function($model){
+                    return \Yii::$app->formatter->asDatetime($model->created_at, "php:d/m/Y");
+                },
+                'filterWidgetOptions' => [
+                    'convertFormat' => true,
+                    'useWithAddon' => false,
+                    'pluginOptions' => [
+                        'locale'=>[
+                            'format' => 'd/m/yy',
+                            'separator'=>' - ',
+                        ],
+                        'opens' => 'left'
+                    ]
+                ]
             ],
             [
                 'header' => 'Acciones',
